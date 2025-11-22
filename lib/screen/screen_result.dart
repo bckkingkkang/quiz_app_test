@@ -20,7 +20,9 @@ class ResultScreen extends StatelessWidget {
         score++;
       }
     }
-    return SafeArea(
+    return WillPopScope(
+      onWillPop : () async => false,
+      child : SafeArea(
       child: Scaffold(
         appBar : AppBar(
           title : Text("My Quiz App"),
@@ -123,6 +125,7 @@ class ResultScreen extends StatelessWidget {
           ),
         )
       )
+    )
     );
   }
 }
