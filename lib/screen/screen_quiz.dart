@@ -101,7 +101,6 @@ class _QuizScreenState extends State<QuizScreen> {
                   borderRadius:BorderRadius.circular(10),
                 ),
                 child : ElevatedButton(
-                  child : _currentIndex == widget.quizs.length -1 ? Text('결과 보기') : Text('다음 문제'),
                   style: ElevatedButton.styleFrom(
                     textStyle : TextStyle(
                       backgroundColor: Colors.white,
@@ -122,7 +121,8 @@ class _QuizScreenState extends State<QuizScreen> {
                       _currentIndex += 1;
                       _controller.next();
                     }
-                  }
+                  },
+                  child : _currentIndex == widget.quizs.length -1 ? Text('결과 보기') : Text('다음 문제')
                 )
               )
             )
