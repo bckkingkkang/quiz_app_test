@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app_test/model/api_adpater.dart';
 import 'package:quiz_app_test/model/model_quiz.dart';
 import 'package:quiz_app_test/screen/screen_quiz.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class HomeScreen extends StatefulWidget{
   @override
@@ -28,7 +31,22 @@ class _HomeScreenState extends State<HomeScreen>{
     })
     */
   ];
-  
+
+  bool isLoading = false;  
+  _fetchQuizs() async {
+    setState(() {
+      isLoading = true;
+    });
+    final response = await http.get(Uri.parse("https://api-quiz-app-test-90422ffe448a.herokuapp.com/quiz/3/"));
+    if(response.statusCode == 200){
+      setState(() {
+        quizs = parseQuizs(utf8.decode(response.bodyBytes));
+        isLoading = false;
+      });
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }  
 
   @override
   Widget build (BuildContext context){
@@ -98,13 +116,17 @@ return WillPopScope(
                       ),
                     ),
                     onPressed: (){
-                      Navigator.push(
+                      _fetchQuizs().whenComplete(() {
+                        return
+                        Navigator.push(
                         context, 
                         MaterialPageRoute(
                           builder : (context) => QuizScreen(
                             quizs : quizs,
                           )
                       ));
+                      });
+                      
                     },
                     child:Text (
                       'Start Quiz',
